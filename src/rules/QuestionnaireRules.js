@@ -2,11 +2,11 @@ export const questionnaireRules = {
   sections: [
     {
       id: "companyInformation",
-      title: "Informations sur l’entreprise",
+      title: "Informations sur l'entreprise",
       questions: [
         {
           id: "pep_company",
-          text: "L’entreprise est-elle contrôlée ou influencée par une Personne Politiquement Exposée (PEP) ?",
+          text: "L'entreprise est-elle contrôlée ou influencée par une Personne Politiquement Exposée (PEP) ?",
           type: "radio",
           options: [
             { value: "OUI", label: "OUI" },
@@ -26,7 +26,7 @@ export const questionnaireRules = {
         },
         {
           id: "professionalInvestor",
-          text: "L’entreprise est-elle considérée comme un investisseur professionnel ?",
+          text: "L'entreprise est-elle considérée comme un investisseur professionnel ?",
           type: "radio",
           options: [
             { value: "OUI", label: "OUI" },
@@ -37,7 +37,7 @@ export const questionnaireRules = {
     },
     {
       id: "investmentObjectives",
-      title: "Objectifs d'investissement de l’entreprise",
+      title: "Objectifs d'investissement de l'entreprise",
       questions: [
         {
           id: "mainObjective_company",
@@ -52,7 +52,7 @@ export const questionnaireRules = {
         },
         {
           id: "investmentHorizon_company",
-          text: "Quel horizon correspond le mieux à la stratégie d’investissement de l’entreprise ?",
+          text: "Quel horizon correspond le mieux à la stratégie d'investissement de l'entreprise ?",
           type: "radio",
           options: [
             { value: "court", label: "Moins de 2 ans (court terme)" },
@@ -62,7 +62,7 @@ export const questionnaireRules = {
         },
         {
           id: "investmentGoals_company",
-          text: "Quels sont les objectifs d’investissement de l’entreprise sur Fundora ?",
+          text: "Quels sont les objectifs d'investissement de l'entreprise sur Fundora ?",
           type: "checkbox",
           options: [
             { value: "revenus", label: "Obtenir des revenus complémentaires" },
@@ -73,7 +73,7 @@ export const questionnaireRules = {
         },
         {
           id: "riskLevel_company",
-          text: "Quel niveau de risque l’entreprise souhaite-t-elle pour ses investissements ?",
+          text: "Quel niveau de risque l'entreprise souhaite-t-elle pour ses investissements ?",
           type: "radio",
           options: [
             { value: "faible", label: "Faible" },
@@ -93,7 +93,7 @@ export const questionnaireRules = {
       questions: [
         {
           id: "esgImportance_company",
-          text: "Quelle importance l’entreprise accorde-t-elle à l’impact social et environnemental de ses investissements ?",
+          text: "Quelle importance l'entreprise accorde-t-elle à l'impact social et environnemental de ses investissements ?",
           type: "radio",
           options: [
             { value: "faible", label: "Faible" },
@@ -103,7 +103,7 @@ export const questionnaireRules = {
         },
         {
           id: "sectorsExclusion_company",
-          text: "Quels secteurs l’entreprise souhaite-t-elle exclure de ses investissements ?",
+          text: "Quels secteurs l'entreprise souhaite-t-elle exclure de ses investissements ?",
           type: "checkbox",
           options: [
             { value: "armement", label: "Armement" },
@@ -114,7 +114,7 @@ export const questionnaireRules = {
         },
         {
           id: "esgGovernance_company",
-          text: "Quelle importance l’entreprise accorde-t-elle aux critères de gouvernance (transparence, diversité, éthique des dirigeants) ?",
+          text: "Quelle importance l'entreprise accorde-t-elle aux critères de gouvernance (transparence, diversité, éthique des dirigeants) ?",
           type: "radio",
           options: [
             { value: "faible", label: "Faible" },
@@ -124,7 +124,7 @@ export const questionnaireRules = {
         },
         {
           id: "esgRendement_company",
-          text: "L’entreprise accepterait-elle un rendement financier légèrement inférieur pour investir dans des entreprises ayant de très bonnes pratiques ESG ?",
+          text: "L'entreprise accepterait-elle un rendement financier légèrement inférieur pour investir dans des entreprises ayant de très bonnes pratiques ESG ?",
           type: "radio",
           options: [
             { value: "oui", label: "Oui" },
@@ -134,7 +134,7 @@ export const questionnaireRules = {
         },
         {
           id: "esgInfo_company",
-          text: "Souhaitez-vous que l’entreprise reçoive des informations détaillées sur la performance ESG des produits financiers dans lesquels elle investit ?",
+          text: "Souhaitez-vous que l'entreprise reçoive des informations détaillées sur la performance ESG des produits financiers dans lesquels elle investit ?",
           type: "radio",
           options: [
             { value: "oui", label: "Oui" },
@@ -143,7 +143,7 @@ export const questionnaireRules = {
         },
         {
           id: "esgCriteriaPriority_company",
-          text: "Parmi les critères ESG, lesquels sont les plus importants pour l’entreprise ?",
+          text: "Parmi les critères ESG, lesquels sont les plus importants pour l'entreprise ?",
           type: "checkbox",
           options: [
             { value: "environnement", label: "Environnement" },
@@ -154,7 +154,7 @@ export const questionnaireRules = {
         },
         {
           id: "esgCertification_company",
-          text: "L’entreprise attache-t-elle de l’importance à ce que les produits financiers disposent d’une certification ESG établie par une agence indépendante ?",
+          text: "L'entreprise attache-t-elle de l'importance à ce que les produits financiers disposent d'une certification ESG établie par une agence indépendante ?",
           type: "radio",
           options: [
             { value: "oui", label: "Oui" },
@@ -164,7 +164,7 @@ export const questionnaireRules = {
         },
         {
           id: "esgRiskKnowledge_company",
-          text: "Dans quelle mesure l’entreprise estime-t-elle être informée des risques climatiques et environnementaux liés aux investissements ?",
+          text: "Dans quelle mesure l'entreprise estime-t-elle être informée des risques climatiques et environnementaux liés aux investissements ?",
           type: "radio",
           options: [
             { value: "bien_informe", label: "Bien informée" },
@@ -174,7 +174,7 @@ export const questionnaireRules = {
         },
         {
           id: "esgSectorExclusionImportance_company",
-          text: "Pour l’entreprise, l'exclusion de certains secteurs (ex. armement, tabac, énergies fossiles) est-elle essentielle dans sa sélection d’investissements ?",
+          text: "Pour l'entreprise, l'exclusion de certains secteurs (ex. armement, tabac, énergies fossiles) est-elle essentielle dans sa sélection d'investissements ?",
           type: "radio",
           options: [
             { value: "oui", label: "Oui" },
@@ -186,17 +186,17 @@ export const questionnaireRules = {
     },
     {
       id: "financialSituation",
-      title: "Situation financière de l’entreprise",
+      title: "Situation financière de l'entreprise",
       questions: [
         {
           id: "fundsOrigin_company",
-          text: "Quelle est l'origine des fonds que l’entreprise envisage d’investir ? (plusieurs réponses possibles)",
+          text: "Quelle est l'origine des fonds que l'entreprise envisage d'investir ? (plusieurs réponses possibles)",
           type: "checkbox",
           options: [
-            { value: "benefice_exercice", label: "Bénéfices de l’exercice en cours" },
+            { value: "benefice_exercice", label: "Bénéfices de l'exercice en cours" },
             { value: "reserve", label: "Réserves et capitaux propres" },
             { value: "emprunts", label: "Emprunts bancaires" },
-            { value: "cession_actifs", label: "Produits de la cession d’actifs" },
+            { value: "cession_actifs", label: "Produits de la cession d'actifs" },
             { value: "autres", label: "Autres" }
           ]
         },
@@ -211,6 +211,7 @@ export const questionnaireRules = {
               min: 0,
               max: 2000000,
               step: 10000,
+              defaultValue: 0,
               marks: [
                 { value: 0, label: "0 €" },
                 { value: 500000, label: "500k €" },
@@ -224,6 +225,7 @@ export const questionnaireRules = {
               min: 0,
               max: 2000000,
               step: 10000,
+              defaultValue: 0,
               label: "Montant exact"
             }
           ],
@@ -240,6 +242,7 @@ export const questionnaireRules = {
               min: 0,
               max: 2000000,
               step: 10000,
+              defaultValue: 0,
               marks: [
                 { value: 0, label: "0 €" },
                 { value: 500000, label: "500k €" },
@@ -253,6 +256,7 @@ export const questionnaireRules = {
               min: 0,
               max: 2000000,
               step: 10000,
+              defaultValue: 0,
               label: "Montant exact"
             }
           ],
@@ -269,6 +273,7 @@ export const questionnaireRules = {
               min: -2000000,
               max: 2000000,
               step: 10000,
+              defaultValue: 0,
               marks: [
                 { value: -2000000, label: "-2M €" },
                 { value: -1000000, label: "-1M €" },
@@ -282,6 +287,7 @@ export const questionnaireRules = {
               min: -2000000,
               max: 2000000,
               step: 10000,
+              defaultValue: 0,
               label: "Montant exact"
             }
           ],
@@ -298,6 +304,7 @@ export const questionnaireRules = {
               min: -2000000,
               max: 2000000,
               step: 10000,
+              defaultValue: 0,
               marks: [
                 { value: -2000000, label: "-2M €" },
                 { value: -1000000, label: "-1M €" },
@@ -311,6 +318,7 @@ export const questionnaireRules = {
               min: -2000000,
               max: 2000000,
               step: 10000,
+              defaultValue: 0,
               label: "Montant exact"
             }
           ],
@@ -318,7 +326,7 @@ export const questionnaireRules = {
         },
         {
           id: "companyInvestmentPercentage",
-          text: "Quel pourcentage du patrimoine de l’entreprise est destiné à être investi en Private Equity ?",
+          text: "Quel pourcentage du patrimoine de l'entreprise est destiné à être investi en Private Equity ?",
           type: "radio",
           options: [
             { value: "5%", label: "5%" },
@@ -337,7 +345,7 @@ export const questionnaireRules = {
       questions: [
         {
           id: "hasInvested_company",
-          text: "En tant que représentant légal, avez-vous déjà réalisé des investissements financiers pour l’entreprise ?",
+          text: "En tant que personne physique, avez-vous déjà réalisé des investissements financiers pour l'entreprise ?",
           type: "radio",
           options: [
             { value: "OUI", label: "OUI" },
@@ -346,7 +354,7 @@ export const questionnaireRules = {
         },
         {
           id: "investedProducts_company",
-          text: "Sur quels produits financiers l’entreprise a-t-elle investi, selon vous ?",
+          text: "Sur quels produits financiers avez-vous personnellement investi pour le compte de l'entreprise ?",
           type: "checkbox",
           options: [
             { value: "obligation", label: "Obligation" },
@@ -359,17 +367,17 @@ export const questionnaireRules = {
         },
         {
           id: "investmentLosses_company",
-          text: "L’entreprise a-t-elle déjà subi des pertes sur ses investissements financiers ?",
+          text: "Avez-vous personnellement déjà subi des pertes sur des investissements financiers ?",
           type: "radio",
           options: [
             { value: "aucune", label: "Non, aucune perte" },
-            { value: "5pct", label: "Oui, jusqu’à 5%" },
+            { value: "5pct", label: "Oui, jusqu'à 5%" },
             { value: "10pct", label: "Oui, plus de 10%" }
           ]
         },
         {
           id: "understandPE_company",
-          text: "En tant que représentant légal, comprenez-vous le fonctionnement du Private Equity et son modèle de valorisation ?",
+          text: "En tant que personne physique, comprenez-vous le fonctionnement du Private Equity et son modèle de valorisation ?",
           type: "radio",
           options: [
             { value: "OUI", label: "OUI" },
@@ -378,17 +386,17 @@ export const questionnaireRules = {
         },
         {
           id: "bondDefinition_company",
-          text: "Selon vous, qu'est-ce qu'une obligation ?",
+          text: "Selon votre compréhension personnelle, qu'est-ce qu'une obligation ?",
           type: "radio",
           options: [
-            { value: "pret", label: "Un titre représentant un prêt d’argent contre versement d’intérêts" },
-            { value: "propriete", label: "Un titre représentant une part de la propriété d’une entreprise" },
+            { value: "pret", label: "Un titre représentant un prêt d'argent contre versement d'intérêts" },
+            { value: "propriete", label: "Un titre représentant une part de la propriété d'une entreprise" },
             { value: "ne_sais_pas", label: "Je ne sais pas" }
           ]
         },
         {
           id: "peFundsUnderstanding_company",
-          text: "Comment qualifieriez-vous votre compréhension des fonds de Private Equity ?",
+          text: "Comment qualifieriez-vous votre compréhension personnelle des fonds de Private Equity ?",
           type: "radio",
           options: [
             { value: "excellente", label: "Excellente" },
@@ -399,7 +407,7 @@ export const questionnaireRules = {
         },
         {
           id: "illiquidityMeaning_company",
-          text: "Que signifie pour vous, en tant que représentant légal, le fait que les investissements via Fundora soient qualifiés d’illiquides ?",
+          text: "Que signifie pour vous personnellement le fait que les investissements via Fundora soient qualifiés d'illiquides ?",
           type: "radio",
           options: [
             { value: "retrait_immediat", label: "Possibilité de retrait immédiat" },
@@ -415,28 +423,28 @@ export const questionnaireRules = {
       questions: [
         {
           id: "understandRisks_company",
-          text: "Je reconnais que l’investissement en Private Equity comporte des risques, notamment de perte en capital, et j’engage l’entreprise en ce sens.",
+          text: "Je reconnais personnellement que l'investissement en Private Equity comporte des risques, notamment de perte en capital, et j'engage l'entreprise en ce sens.",
           type: "checkbox",
           options: [
-            { value: "understood", label: "Je comprends et j’accepte les risques" }
+            { value: "understood", label: "Je comprends et j'accepte les risques" }
           ],
           required: true
         },
         {
           id: "understandLiquidity_company",
-          text: "Je reconnais que les investissements seront bloqués pendant plusieurs années.",
+          text: "Je reconnais personnellement que les investissements seront bloqués pendant plusieurs années.",
           type: "checkbox",
           options: [
-            { value: "understood", label: "Je comprends et j’accepte le blocage des investissements" }
+            { value: "understood", label: "Je comprends et j'accepte le blocage des investissements" }
           ],
           required: true
         },
         {
           id: "understandDiversification_company",
-          text: "Je comprends l’importance de la diversification et confirme que l’entreprise n’investira pas au-delà du pourcentage défini de son patrimoine.",
+          text: "Je comprends personnellement l'importance de la diversification et confirme que l'entreprise n'investira pas au-delà du pourcentage défini de son patrimoine.",
           type: "checkbox",
           options: [
-            { value: "understood", label: "Je comprends et j’accepte les limites d’investissement" }
+            { value: "understood", label: "Je comprends et j'accepte les limites d'investissement" }
           ],
           required: true
         }
@@ -444,7 +452,7 @@ export const questionnaireRules = {
     },
     {
       id: "profileSummary",
-      title: "Synthèse du profil de l’entreprise et recommandations",
+      title: "Synthèse du profil de l'entreprise et recommandations",
       type: "summary"
     }
   ]

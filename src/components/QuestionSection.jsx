@@ -35,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
   },
   questionLabel: {
     fontWeight: 500,
-    color: theme.palette.text.primary,
     marginBottom: theme.spacing(1),
   },
   questionText: {
@@ -59,101 +58,43 @@ const useStyles = makeStyles((theme) => ({
     fontStyle: 'italic',
   },
   sliderContainer: {
-    padding: theme.spacing(2, 1),
-  },
-  slider: {
-    '& .MuiSlider-rail': {
-      height: 8,
-      borderRadius: 4,
-      backgroundColor: theme.palette.grey[300],
-    },
-    '& .MuiSlider-track': {
-      height: 8,
-      borderRadius: 4,
-    },
-    '& .MuiSlider-thumb': {
-      width: 24,
-      height: 24,
-      backgroundColor: '#fff',
-      border: '2px solid currentColor',
-      '&:hover, &.Mui-focusVisible': {
-        boxShadow: `0px 0px 0px 8px ${theme.palette.primary.main}`,
-      },
-    },
-    '& .MuiSlider-valueLabel': {
-      fontSize: 14,
-      fontWeight: 'normal',
-      top: -22,
-      backgroundColor: 'unset',
-      '&:before': { display: 'none' },
-      '& *': {
-        background: 'transparent',
-      },
+    padding: theme.spacing(2, 3),
+    '& .MuiSlider-root': {
+      width: '100%',
+      marginTop: theme.spacing(2),
     },
     '& .MuiSlider-mark': {
-      backgroundColor: theme.palette.grey[500],
-      height: 2,
-      width: 2,
-      borderRadius: 1,
-    },
-    '& .MuiSlider-markActive': {
-      opacity: 1,
-      backgroundColor: 'currentColor',
+      height: 8,
     },
     '& .MuiSlider-markLabel': {
-      fontSize: 12,
-      color: theme.palette.text.secondary,
+      fontSize: '0.875rem',
+      marginTop: theme.spacing(1),
+    },
+    '& .MuiSlider-valueLabel': {
+      fontSize: '0.875rem',
+    },
+    '& .MuiSlider-rail': {
+      height: 4,
+    },
+    '& .MuiSlider-track': {
+      height: 4,
     },
   },
   amountField: {
-    '& .MuiOutlinedInput-root': {
-      borderRadius: theme.shape.borderRadius,
-      backgroundColor: theme.palette.background.paper,
-      transition: theme.transitions.create(['border-color', 'box-shadow']),
-      '&:hover': {
-        borderColor: theme.palette.primary.main,
-      },
-      '&.Mui-focused': {
-        boxShadow: `0 0 0 2px ${theme.palette.primary.main}`,
-        borderColor: theme.palette.primary.main,
-      },
+    '& .MuiInputBase-input': {
+      textAlign: 'right',
     },
   },
-  infoIcon: {
-    fontSize: 16,
-    marginLeft: theme.spacing(1),
+  combined: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
   },
 }));
 
 const QuestionSection = ({ section, formData, onFormDataChange, errors = {} }) => {
   const classes = useStyles();
 
-  // Vérification que section est défini
-  if (!section) {
-    console.warn('QuestionSection: Section non définie');
-    return null;
-  }
-
-  // Si la section a une condition, vérifier si elle doit être affichée
-  if (section.conditional) {
-    const { dependsOn, showWhen } = section.conditional;
-    const currentValue = formData[dependsOn];
-    
-    // Si showWhen est un tableau, vérifier si la valeur actuelle est dans le tableau
-    if (Array.isArray(showWhen)) {
-      if (!showWhen.includes(currentValue)) {
-        return null;
-      }
-    } 
-    // Si showWhen est une valeur unique, faire une comparaison directe
-    else if (currentValue !== showWhen) {
-      return null;
-    }
-  }
-
-  // Vérification que la section a des questions
-  if (!section.questions || !Array.isArray(section.questions)) {
-    console.warn('QuestionSection: Questions non définies ou invalides', section);
+  if (!section || !section.questions) {
     return null;
   }
 
@@ -165,23 +106,19 @@ const QuestionSection = ({ section, formData, onFormDataChange, errors = {} }) =
   };
 
   const renderQuestion = (question) => {
-    if (!question || !question.id || !question.type) {
-      console.warn('QuestionSection: Question invalide', question);
-      return null;
-    }
-
-    const error = errors[question.id];
+    if (!question) return null;
 
     switch (question.type) {
       case 'radio':
         return (
-          <Box key={question.id} className={classes.question}>
-            <Typography className={classes.questionLabel}>{question.text}</Typography>
-            <FormControl component="fieldset" error={!!error}>
+          <Box key={question.id}>
+            <Typography className={classes.questionLabel}>
+              {question.text}
+            </Typography>
+            <FormControl component="fieldset">
               <RadioGroup
                 value={formData[question.id] || ''}
                 onChange={(e) => handleChange(question.id, e.target.value)}
-                className={classes.radioGroup}
               >
                 {question.options.map((option) => (
                   <FormControlLabel
@@ -192,61 +129,56 @@ const QuestionSection = ({ section, formData, onFormDataChange, errors = {} }) =
                   />
                 ))}
               </RadioGroup>
-              {error && (
-                <Typography color="error" variant="caption">
-                  {error}
-                </Typography>
-              )}
-              {question.footnote && (
-                <Typography className={classes.footnote}>{question.footnote}</Typography>
-              )}
             </FormControl>
+            {question.footnote && (
+              <Typography variant="caption" className={classes.footnote}>
+                {question.footnote}
+              </Typography>
+            )}
           </Box>
         );
 
       case 'checkbox':
         return (
-          <Box key={question.id} className={classes.question}>
-            <Typography className={classes.questionLabel}>{question.text}</Typography>
-            <FormControl component="fieldset" error={!!error}>
-              <FormGroup className={classes.checkboxGroup}>
-                {question.options.map((option) => (
-                  <FormControlLabel
-                    key={option.value}
-                    control={
-                      <Checkbox
-                        checked={formData[question.id]?.[option.value] || false}
-                        onChange={(e) =>
-                          handleChange(question.id, {
-                            ...formData[question.id],
-                            [option.value]: e.target.checked,
-                          })
-                        }
-                      />
-                    }
-                    label={option.label}
-                  />
-                ))}
-              </FormGroup>
-              {error && (
-                <Typography color="error" variant="caption">
-                  {error}
-                </Typography>
-              )}
-            </FormControl>
+          <Box key={question.id}>
+            <Typography className={classes.questionLabel}>
+              {question.text}
+            </Typography>
+            <FormGroup>
+              {question.options.map((option) => (
+                <FormControlLabel
+                  key={option.value}
+                  control={
+                    <Checkbox
+                      checked={formData[question.id]?.includes(option.value) || false}
+                      onChange={(e) => {
+                        const currentValues = formData[question.id] || [];
+                        const newValues = e.target.checked
+                          ? [...currentValues, option.value]
+                          : currentValues.filter((v) => v !== option.value);
+                        handleChange(question.id, newValues);
+                      }}
+                    />
+                  }
+                  label={option.label}
+                />
+              ))}
+            </FormGroup>
           </Box>
         );
 
       case 'number':
         return (
-          <Box key={question.id} className={classes.question}>
-            <Typography className={classes.questionLabel}>{question.text}</Typography>
+          <Box key={question.id}>
+            <Typography className={classes.questionLabel}>
+              {question.text}
+            </Typography>
             <TextField
               type="number"
               value={formData[question.id] || ''}
               onChange={(e) => handleChange(question.id, e.target.value)}
-              error={!!error}
-              helperText={error}
+              error={!!errors[question.id]}
+              helperText={errors[question.id]}
               className={classes.numberInput}
               InputProps={{
                 endAdornment: question.unit && (
@@ -262,14 +194,16 @@ const QuestionSection = ({ section, formData, onFormDataChange, errors = {} }) =
 
       case 'currency':
         return (
-          <Box key={question.id} className={classes.question}>
-            <Typography className={classes.questionLabel}>{question.text}</Typography>
+          <Box key={question.id}>
+            <Typography className={classes.questionLabel}>
+              {question.text}
+            </Typography>
             <TextField
               type="number"
               value={formData[question.id] || ''}
               onChange={(e) => handleChange(question.id, e.target.value)}
-              error={!!error}
-              helperText={error}
+              error={!!errors[question.id]}
+              helperText={errors[question.id]}
               className={classes.numberInput}
               InputProps={{
                 startAdornment: <InputAdornment position="start">€</InputAdornment>,
@@ -283,8 +217,10 @@ const QuestionSection = ({ section, formData, onFormDataChange, errors = {} }) =
 
       case 'slider':
         return (
-          <Box key={question.id} className={classes.question}>
-            <Typography className={classes.questionLabel}>{question.text}</Typography>
+          <Box key={question.id}>
+            <Typography className={classes.questionLabel}>
+              {question.text}
+            </Typography>
             <Box className={classes.sliderContainer}>
               <Slider
                 value={formData[question.id] || question.min}
@@ -297,21 +233,21 @@ const QuestionSection = ({ section, formData, onFormDataChange, errors = {} }) =
                 className={classes.slider}
               />
             </Box>
-            {error && (
+            {errors[question.id] && (
               <Typography color="error" variant="caption">
-                {error}
+                {errors[question.id]}
               </Typography>
             )}
           </Box>
         );
 
       case 'combined':
-        const value = formData[question.id] || question.components?.[0]?.min || 0;
+        const value = formData[question.id] !== undefined ? formData[question.id] : 0;
         const isNegative = Number(value) < 0;
         const isNetIncome = question.id === 'netIncome';
 
         return (
-          <Box>
+          <Box key={question.id} className={classes.combined}>
             <Typography className={classes.questionLabel}>
               {question.text}
             </Typography>
@@ -323,14 +259,38 @@ const QuestionSection = ({ section, formData, onFormDataChange, errors = {} }) =
                 Attention : Vous renseignez un résultat net négatif, ce qui indique une perte pour l'entreprise.
               </Alert>
             )}
-            <Grid container spacing={2} alignItems="center">
+            <Grid container spacing={3} alignItems="center">
               <Grid item xs={8}>
                 <Box className={classes.sliderContainer}>
                   <Slider
-                    value={Number(value) || question.components[0].min}
+                    value={Number(value)}
                     onChange={(e, newValue) => handleChange(question.id, newValue)}
-                    {...question.components[0]}
-                    className={classes.slider}
+                    min={question.components[0].min}
+                    max={question.components[0].max}
+                    step={question.components[0].step}
+                    marks={question.components[0].marks}
+                    valueLabelDisplay="auto"
+                    sx={{
+                      '& .MuiSlider-track': {
+                        backgroundColor: isNegative ? '#d32f2f' : '#2e7d32',
+                        height: 4,
+                      },
+                      '& .MuiSlider-thumb': {
+                        backgroundColor: isNegative ? '#d32f2f' : '#2e7d32',
+                        '&:hover, &.Mui-focusVisible': {
+                          boxShadow: isNegative 
+                            ? '0 0 0 8px rgba(211, 47, 47, 0.16)'
+                            : '0 0 0 8px rgba(46, 125, 50, 0.16)',
+                        },
+                      },
+                      '& .MuiSlider-rail': {
+                        height: 4,
+                      },
+                      '& .MuiSlider-markLabel': {
+                        fontSize: '0.875rem',
+                        fontWeight: 500,
+                      },
+                    }}
                   />
                 </Box>
               </Grid>
@@ -339,13 +299,21 @@ const QuestionSection = ({ section, formData, onFormDataChange, errors = {} }) =
                   type="number"
                   value={value}
                   onChange={(e) => handleChange(question.id, e.target.value)}
-                  {...question.components[1]}
+                  inputProps={{
+                    min: question.components[1].min,
+                    max: question.components[1].max,
+                    step: question.components[1].step
+                  }}
                   fullWidth
                   InputProps={{
                     endAdornment: <InputAdornment position="end">€</InputAdornment>,
-                    sx: isNegative ? { 
-                      '& input': { color: '#d32f2f' }
-                    } : {}
+                    sx: {
+                      '& input': {
+                        color: isNegative ? '#d32f2f' : 'inherit',
+                        textAlign: 'right',
+                        paddingRight: '8px',
+                      },
+                    },
                   }}
                   className={classes.amountField}
                 />
@@ -355,14 +323,17 @@ const QuestionSection = ({ section, formData, onFormDataChange, errors = {} }) =
         );
 
       default:
-        console.warn(`Type de question non supporté: ${question.type}`);
         return null;
     }
   };
 
   return (
-    <Paper className={classes.paper}>
-      {section.questions.map(renderQuestion)}
+    <Paper elevation={0} className={classes.paper}>
+      {section.questions.map((question) => (
+        <Box key={question.id}>
+          {renderQuestion(question)}
+        </Box>
+      ))}
     </Paper>
   );
 };

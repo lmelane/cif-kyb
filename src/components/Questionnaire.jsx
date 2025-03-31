@@ -14,9 +14,9 @@ import { makeStyles } from '@mui/styles';
 import QuestionSection from './QuestionSection';
 import {
   calculateAdjustedAnnualCapKYB,
-  riskCoefficientsCompany,
-  horizonCoefficientsCompany,
-  objectiveCoefficientsCompany,
+  riskCoefficients_Individual,
+  horizonCoefficients_Individual,
+  objectiveCoefficients_Individual,
 } from '../rules/CalculationRules';
 import { questionnaireRules } from '../rules/QuestionnaireRules';
 
@@ -86,10 +86,10 @@ const Questionnaire = () => {
     mainObjective_company: 'patrimoine',
     investmentHorizon_company: 'moyen',
     riskLevel_company: 'modere',
-    annualTurnover: '',
-    netIncome: '',
-    balanceSheetTotal: '',
-    equityCapital: '',
+    annualTurnover: 0,
+    netIncome: 0,
+    balanceSheetTotal: 0,
+    equityCapital: 0,
     esgImportance_company: '',
   });
   const [errors, setErrors] = useState({});
@@ -121,8 +121,16 @@ const Questionnaire = () => {
     section.questions.forEach((question) => {
       if (!question) return;
       
-      if (question.required && !formData[question.id]) {
-        newErrors[question.id] = 'Ce champ est requis';
+      if (question.required) {
+        const value = formData[question.id];
+        // Pour les champs numériques, 0 est une valeur valide
+        if (question.type === 'combined') {
+          if (value === undefined || value === '') {
+            newErrors[question.id] = 'Ce champ est requis';
+          }
+        } else if (!value && value !== 0) {
+          newErrors[question.id] = 'Ce champ est requis';
+        }
       }
     });
     
@@ -230,9 +238,63 @@ const Questionnaire = () => {
     }).format(amount);
   };
 
+  // Évaluer l'expérience face aux pertes
+  const getInvestmentLossesDescription = (lossesValue) => {
+    switch (lossesValue) {
+      case 'aucune':
+        return "Vous n'avez jamais subi de pertes sur vos investissements financiers.";
+      case '5pct':
+        return "Vous avez déjà subi des pertes jusqu'à 5% sur vos investissements financiers.";
+      case '10pct':
+        return "Vous avez déjà subi des pertes de plus de 10% sur vos investissements financiers.";
+      default:
+        return "Information non renseignée";
+    }
+  };
+
+  // Évaluer la compréhension des fonds de Private Equity
+  const getPEFundsUnderstandingDescription = (understandingValue) => {
+    switch (understandingValue) {
+      case 'excellente':
+        return "Vous avez une excellente compréhension des fonds de Private Equity.";
+      case 'bonne':
+        return "Vous avez une bonne compréhension des fonds de Private Equity.";
+      case 'basique':
+        return "Vous avez une compréhension basique des fonds de Private Equity.";
+      case 'aucune':
+        return "Vous n'avez aucune compréhension des fonds de Private Equity.";
+      default:
+        return "Information non renseignée";
+    }
+  };
+
+  // Évaluer l'expérience globale en investissement
+  const getInvestmentExperienceDescription = (formData) => {
+    const hasInvested = formData.hasInvested_company === 'OUI';
+    const understandsPE = formData.understandPE_company === 'OUI';
+    const investedProducts = formData.investedProducts_company || [];
+    
+    let experienceLevel = "faible";
+    let description = "";
+    
+    // Déterminer le niveau d'expérience
+    if (hasInvested && understandsPE && Array.isArray(investedProducts) && investedProducts.length > 3) {
+      experienceLevel = "élevée";
+      description = "Vous avez une expérience élevée en matière d'investissements financiers.";
+    } else if (hasInvested && (Array.isArray(investedProducts) && investedProducts.length > 1)) {
+      experienceLevel = "moyenne";
+      description = "Vous avez une expérience moyenne en matière d'investissements financiers.";
+    } else {
+      description = "Vous avez une expérience limitée en matière d'investissements financiers.";
+    }
+    
+    return { level: experienceLevel, description };
+  };
+
   const calculateProfile = () => {
     const annualInvestmentCapacity = calculateMaxInvestmentAmount();
-
+    const investmentExperience = getInvestmentExperienceDescription(formData);
+    
     return {
       annualInvestmentCapacity,
       riskProfile: formData.riskLevel_company || 'modere',
@@ -242,7 +304,14 @@ const Questionnaire = () => {
       // Descriptions des profils
       riskDescription: getRiskProfileDescription(formData.riskLevel_company),
       horizonDescription: getHorizonDescription(formData.investmentHorizon_company),
-      objectiveDescription: getObjectiveDescription(formData.mainObjective_company)
+      objectiveDescription: getObjectiveDescription(formData.mainObjective_company),
+      // Nouvelles informations sur l'expérience
+      experienceLevel: investmentExperience.level,
+      experienceDescription: investmentExperience.description,
+      investmentLosses: formData.investmentLosses_company,
+      investmentLossesDescription: getInvestmentLossesDescription(formData.investmentLosses_company),
+      peFundsUnderstanding: formData.peFundsUnderstanding_company,
+      peFundsUnderstandingDescription: getPEFundsUnderstandingDescription(formData.peFundsUnderstanding_company)
     };
   };
 
@@ -332,7 +401,7 @@ const Questionnaire = () => {
             <Grid item xs={12} md={4}>
               <Paper sx={{ p: 2 }}>
                 <Typography variant="subtitle1" gutterBottom>
-                  Profil de risque
+                  Votre tolérance au risque
                 </Typography>
                 <Typography variant="body1">
                   {profile.riskProfile.charAt(0).toUpperCase() + profile.riskProfile.slice(1)}
@@ -346,7 +415,7 @@ const Questionnaire = () => {
             <Grid item xs={12} md={4}>
               <Paper sx={{ p: 2 }}>
                 <Typography variant="subtitle1" gutterBottom>
-                  Horizon d'investissement
+                  Votre horizon d'investissement
                 </Typography>
                 <Typography variant="body1">
                   {profile.investmentHorizon.charAt(0).toUpperCase() + profile.investmentHorizon.slice(1)}
@@ -373,6 +442,59 @@ const Questionnaire = () => {
                     Importance ESG : {profile.esgImportance || 'Non spécifié'}
                   </Typography>
                 )}
+              </Paper>
+            </Grid>
+
+            {/* Nouvelle section pour l'expérience et les connaissances financières */}
+            <Grid item xs={12}>
+              <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+                Vos expériences et connaissances financières
+              </Typography>
+            </Grid>
+
+            <Grid item xs={12} md={4}>
+              <Paper sx={{ p: 2 }}>
+                <Typography variant="subtitle1" gutterBottom>
+                  Niveau d'expérience en matière d'investissements financiers
+                </Typography>
+                <Typography variant="body1">
+                  {profile.experienceLevel.charAt(0).toUpperCase() + profile.experienceLevel.slice(1)}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                  {profile.experienceDescription}
+                </Typography>
+              </Paper>
+            </Grid>
+
+            <Grid item xs={12} md={4}>
+              <Paper sx={{ p: 2 }}>
+                <Typography variant="subtitle1" gutterBottom>
+                  Expérience face aux pertes
+                </Typography>
+                <Typography variant="body1">
+                  {profile.investmentLosses === 'aucune' ? 'Aucune perte' : 
+                   profile.investmentLosses === '5pct' ? 'Pertes jusqu\'à 5%' : 
+                   profile.investmentLosses === '10pct' ? 'Pertes supérieures à 10%' : 'Non spécifié'}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                  {profile.investmentLossesDescription}
+                </Typography>
+              </Paper>
+            </Grid>
+
+            <Grid item xs={12} md={4}>
+              <Paper sx={{ p: 2 }}>
+                <Typography variant="subtitle1" gutterBottom>
+                  Niveau de compréhension des fonds de Private Equity
+                </Typography>
+                <Typography variant="body1">
+                  {profile.peFundsUnderstanding ? 
+                    profile.peFundsUnderstanding.charAt(0).toUpperCase() + profile.peFundsUnderstanding.slice(1) : 
+                    'Non spécifié'}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                  {profile.peFundsUnderstandingDescription}
+                </Typography>
               </Paper>
             </Grid>
           </Grid>
